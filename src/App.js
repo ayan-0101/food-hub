@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Home from "./screens/Home";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Login from "./screens/Login";
+import Signup from "./screens/Signup.js";
+import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-night.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle'
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
+import { CartProvider } from "./components/ContextReducer.js";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import MyOrder from "./screens/MyOrder.js";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CartProvider>
+      <ToastContainer />
+      <Router>
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/createuser" element={<Signup />} />
+            <Route path="/myOrder" element={<MyOrder />} />
+          </Routes>
+        </div>
+      </Router>
+    </CartProvider>
+
   );
 }
 
