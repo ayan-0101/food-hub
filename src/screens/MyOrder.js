@@ -36,7 +36,7 @@ const MyOrder = () => {
             <div className='container'>
                 <div className='row'>
                     {orderData.length === 0 ? (
-                        <div>No orders found</div>
+                        <div style={{height:'100vh'}}>No orders found</div>
                     ) : (
                         orderData.slice(0).reverse().map((order, orderIndex) => (
                             <div key={orderIndex} className='w-100'>
