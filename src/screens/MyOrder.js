@@ -19,7 +19,6 @@ const MyOrder = () => {
             });
 
             const data = await response.json();
-            // console.log('data', data)
             setOrderData(data.orderData ? data.orderData.order_data : []);
         } catch (error) {
             console.error('Error fetching order data:', error);

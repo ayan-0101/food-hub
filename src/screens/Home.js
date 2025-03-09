@@ -13,17 +13,24 @@ const Home = () => {
     const [search, setSearch] = useState('')
 
     const loadData = async () => {
-        let response = await fetch('http://localhost:5000/api/foodData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        response = await response.json();
-        setFoodItem(response[0])
-        setFoodcat(response[1])
+        try {
+            let response = await fetch('http://localhost:5000/api/foodData', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-    }
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            response = await response.json();
+            setFoodItem(response[0] || []);
+            setFoodcat(response[1] || []);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
     useEffect(() => {
         loadData()
     }, [])
@@ -36,7 +43,7 @@ const Home = () => {
                 <div className="carousel-inner" id='carousel'>
                     <div className="carousel-caption" style={{ zIndex: "10" }}>
                         <div className="d-flex justify-content-center">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value={search} onChange={(e)=> setSearch(e.target.value)}/>
+                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
                         </div>
                     </div>
                     <div className="carousel-item active">
@@ -61,7 +68,7 @@ const Home = () => {
 
             <div className='container'>
                 {
-                    foodcat.length !== 0
+                    foodcat && foodcat.length > 0
                         ? foodcat.map((data, index) => {
                             return (
                                 <div className='row mb-3'>
@@ -71,19 +78,22 @@ const Home = () => {
                                     <hr />
                                     {
                                         foodItem.length !== 0
-                                            ? foodItem.filter((item) => item.CategoryName === data.CategoryName && item.name.toLowerCase().includes(search)) 
-                                            .map((filterItems) => {
-                                                return (
-                                                    <div key={filterItems._id} className='col-12 col-md-6 col-lg-3'>
-                                                        <Card
-                                                            foodItem={filterItems}
-                                                            options={filterItems.options[0]}
-                                                            
-                                                        />
-                                                    </div>
-                                                )
-                                            }
+                                            ? (foodItem || []).filter((item) =>
+                                                item.CategoryName === data.CategoryName &&
+                                                item.name.toLowerCase().includes(search.toLowerCase())
                                             )
+                                                .map((filterItems) => {
+                                                    return (
+                                                        <div key={filterItems._id} className='col-12 col-md-6 col-lg-3' style={{display:'flex', justifyContent: 'center'}}>
+                                                            <Card
+                                                                foodItem={filterItems}
+                                                                options={filterItems.options[0]}
+
+                                                            />
+                                                        </div>
+                                                    )
+                                                }
+                                                )
                                             : <div>No Data Found</div>
                                     }
                                 </div>

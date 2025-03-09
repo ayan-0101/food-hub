@@ -11,8 +11,6 @@ const mongoDB = async () => {
         const foodCategory = await mongoose.connection.db.collection("food_category").find({}).toArray();
         global.food_category = foodCategory;
 
-        // console.log(global.food_category)
-
     } catch (err) {
         console.log(err)
     }

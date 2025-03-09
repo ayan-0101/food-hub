@@ -7,7 +7,6 @@ router.post('/foodData', (req, res) => {
     responseData.push(global.food_items);
     responseData.push(global.food_category);
     try {
-        // console.log(responseData)
         res.status(200).send(responseData)
     } catch (error) {
         console.log(error.message)
